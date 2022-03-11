@@ -14,14 +14,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 Route::prefix('v1')->group(function () {
-    Route::post('user/login', [\App\Http\Controllers\Api\UserController::class, 'login']);
-    Route::post('user/register', [\App\Http\Controllers\Api\UserController::class, 'register']);
-    Route::get('user/info',[\App\Http\Controllers\Api\UserController::class,'info']);
-    Route::delete('user/logout',[\App\Http\Controllers\Api\UserController::class,'logout']);
-    Route::get('orders',[\App\Http\Controllers\Api\OrderController::class,'index']);
+
+    Route::prefix('user')->group(function () {
+        Route::post('login', [\App\Http\Controllers\Api\UserController::class, 'login']);
+        Route::post('register', [\App\Http\Controllers\Api\UserController::class, 'register']);
+        Route::get('info', [\App\Http\Controllers\Api\UserController::class, 'info']);
+        Route::delete('logout', [\App\Http\Controllers\Api\UserController::class, 'logout']);
+
+    });
+    Route::middleware(['auth:sanctum','admin.permission'])->group(function (){
+        Route::prefix('user')->group(function () {
+            Route::resource('roles', \App\Http\Controllers\Api\RoleController::class)->parameters(['roles' => 'id']);
+            Route::resource('permissions', \App\Http\Controllers\Api\PermissionController::class)->parameter('permissions', 'id');
+            Route::post('assign-roles', [\App\Http\Controllers\Api\UserController::class, 'assignRole']);
+        });
+        Route::post('roles/assign-permissions', [\App\Http\Controllers\Api\RoleController::class, 'assignPermissions']);
+        Route::get('orders', [\App\Http\Controllers\Api\OrderController::class, 'index']);
+    });
+
 });

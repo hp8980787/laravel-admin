@@ -9,19 +9,20 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Guard;
 
 class UserController extends Controller
 {
 
     public function __construct()
     {
-//        $this->middleware('auth:sanctum')->except('login', 'register');
+        $this->middleware('auth:sanctum')->except('login', 'register');
     }
 
     public function login(UserRequest $request)
     {
         if (Auth::attempt(['name' => $request->name, 'password' => $request->password])) {
-            $user = Auth::guard('sanctum')->user();
+            $user = Auth::user();
             $token = $user->createToken('auth_token')->plainTextToken;
             return $this->success(['token' => $token]);
         }
@@ -51,11 +52,9 @@ class UserController extends Controller
 
     public function info()
     {
-        $user = User::query()->first();
+        $user = Auth::guard('sanctum')->user();
 //        $user = Auth::guard('sanctum')->user();
-        $user->roles =['admin'];
-        $user->avatar = 'https://suntonbattery.com/avatar.jpg';
-        return $this->success($user);
+        return $this->success(UserResource::make($user));
     }
 
     public function logout()
@@ -69,5 +68,25 @@ class UserController extends Controller
     public function index()
     {
 
+    }
+
+    public function assignRole(Request $request)
+    {
+        $user = Auth::user();
+        $roleName = $request->name;
+        $roleId = $request->id;
+        if ($user->hasRole($roleName)) {
+            $user->removeRole($roleName);
+            return $this->message('成功!');
+        }
+        if ($roleId) {
+            $user->assignRole($roleId);
+            return $this->message('成功!');
+        }
+        if ($roleName) {
+            $user->assignRole($roleName);
+            return $this->message('成功');
+        }
+        return $this->failed('分配失败');
     }
 }
