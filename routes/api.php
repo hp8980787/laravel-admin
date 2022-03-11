@@ -23,7 +23,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('logout', [\App\Http\Controllers\Api\UserController::class, 'logout']);
 
     });
-    Route::middleware(['auth:sanctum','admin.permission'])->group(function (){
+    Route::middleware(['auth:sanctum', 'admin.permission'])->group(function () {
         Route::prefix('user')->group(function () {
             Route::resource('roles', \App\Http\Controllers\Api\RoleController::class)->parameters(['roles' => 'id']);
             Route::resource('permissions', \App\Http\Controllers\Api\PermissionController::class)->parameter('permissions', 'id');
@@ -31,6 +31,7 @@ Route::prefix('v1')->group(function () {
         });
         Route::post('roles/assign-permissions', [\App\Http\Controllers\Api\RoleController::class, 'assignPermissions']);
         Route::get('orders', [\App\Http\Controllers\Api\OrderController::class, 'index']);
+        Route::get('orders/todaySales', [\App\Http\Controllers\Api\OrderController::class, 'todaySales']);
     });
 
 });
