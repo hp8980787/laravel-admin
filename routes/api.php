@@ -32,6 +32,8 @@ Route::prefix('v1')->group(function () {
         Route::post('roles/assign-permissions', [\App\Http\Controllers\Api\RoleController::class, 'assignPermissions']);
         Route::get('orders', [\App\Http\Controllers\Api\OrderController::class, 'index']);
         Route::get('orders/todaySales', [\App\Http\Controllers\Api\OrderController::class, 'todaySales']);
+        Route::get('orders/mothSales/country',[\App\Http\Controllers\Api\OrderController::class,'mothCountryStatistics']);
+        Route::get('orders/weekly/dashboard',[\App\Http\Controllers\Api\OrderController::class,'weeklyOrders']);
     });
 
 });
