@@ -34,6 +34,8 @@ Route::prefix('v1')->group(function () {
         Route::get('orders/todaySales', [\App\Http\Controllers\Api\OrderController::class, 'todaySales']);
         Route::get('orders/mothSales/country',[\App\Http\Controllers\Api\OrderController::class,'mothCountryStatistics']);
         Route::get('orders/weekly/dashboard',[\App\Http\Controllers\Api\OrderController::class,'weeklyOrders']);
+        Route::get('orders/statistic',[\App\Http\Controllers\Api\OrderController::class,'statistic']);
+
     });
 
 });
