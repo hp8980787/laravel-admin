@@ -39,13 +39,19 @@ class OrderController extends Controller
 
     protected function transDate(string $type, $key): string
     {
-        $action = $type . 'Group';
-        return $this->$action[$type != 'week' ?: intval($key)];
+        switch ($type){
+            case 'day':
+                return $key;
+            case 'week':
+              return   $this->weekGroup[$key];
+            case  'month':
+                return $this->monthGroup[$key];
+        }
     }
 
     public function index()
     {
-        $orders = Order::query()->paginate(16);
+        $orders = Order::query()->orderBy('created_at','desc')->paginate(16);
         return $this->success(new OrdersCollection($orders));
     }
 
@@ -117,7 +123,7 @@ class OrderController extends Controller
             ->get()->toArray();
         $data = [];
         foreach ($orders as $order) {
-            $data['week'][] = $this->weeklyGroup[$order['week']];
+            $data['week'][] = $this->weekGroup[$order['week']];
             $data['orders'][] = $order['count'];
         }
         return $this->success($data);
@@ -128,6 +134,10 @@ class OrderController extends Controller
         $now = Carbon::now();
         $type = $request->type;
         switch ($type) {
+            case 'day':
+                $min = Carbon::now()->subMonth();
+                $sql = "DATE_FORMAT(`created_at`,'%d')as $type,count(domain_id) count,max(created_at)as created_at,sum(total_usd)as total";
+                break;
             case 'week':
                 $min = Carbon::now()->subDays(6);
                 $sql = "DATE_FORMAT(`created_at`,'%w')as $type,count(domain_id) count,max(created_at)as created_at,sum(total_usd)as total";
@@ -144,6 +154,7 @@ class OrderController extends Controller
             ->orderBy('created_at', 'asc')
             ->get()->toArray();
         $data = [];
+
         foreach ($orders as $order) {
             $data[$type][] = $this->transDate($type, $order[$type]);
             $data['orders'][] = $order['count'];

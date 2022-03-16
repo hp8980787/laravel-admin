@@ -18,6 +18,7 @@ class OrderResource extends JsonResource
             'id'=>$this->id,
             'domain'=>DomainResource::make($this->domain),
             'trans_id'=>$this->trans_id,
+            'user_id'=>$this->user_id,
             'info'=>$this->info,
             'total'=>$this->total,
             'total_usd'=>$this->total_usd,
@@ -25,6 +26,7 @@ class OrderResource extends JsonResource
             'order_status'=>$this->order_status,
             'buy_date'=>$this->buy_time,
             'created_at'=>$this->created_at,
+            'ip'=>$this->ip,
 
         ];
     }
