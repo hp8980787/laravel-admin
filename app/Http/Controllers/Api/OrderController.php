@@ -49,9 +49,19 @@ class OrderController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::query()->orderBy('created_at','desc')->paginate(16);
+        if ($request->keyword){
+            $orders = Order::query()->orderBy('created_at','desc')
+                ->orWhere('trans_id','like',"%$request->keyword%")
+                ->orWhere('table_name','like',"%$request->keyword%")
+                ->orWhere('info','like',"%$request->keyword%")
+                ->paginate(20);
+        }else{
+            $orders = Order::query()->orderBy('created_at','desc')
+                ->paginate(20);
+        }
+
         return $this->success(new OrdersCollection($orders));
     }
 

@@ -35,7 +35,7 @@ Route::prefix('v1')->group(function () {
         Route::get('orders/mothSales/country',[\App\Http\Controllers\Api\OrderController::class,'mothCountryStatistics']);
         Route::get('orders/weekly/dashboard',[\App\Http\Controllers\Api\OrderController::class,'weeklyOrders']);
         Route::get('orders/statistic',[\App\Http\Controllers\Api\OrderController::class,'statistic']);
-
+        Route::resource('products/category',\App\Http\Controllers\Api\CategoryController::class)->parameter('category','id');
     });
 
 });
