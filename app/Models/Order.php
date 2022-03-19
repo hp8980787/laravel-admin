@@ -9,8 +9,8 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $connection = 'order';
-    protected $table = 'gross_order';
+//    protected $connection = 'order';
+//    protected $table = 'gross_order';
     protected $casts = [
         'info' => 'json',
         'created_at' => 'string:Y-m-d H:i:s'

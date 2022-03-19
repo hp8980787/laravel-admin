@@ -65,12 +65,9 @@ return [
         'order' => [
             'driver' => 'mysql',
             'url' => '',
-//            'host' => '162.214.173.171',
             'host' => '127.0.0.1',
             'port' => env('DB_PORT', '3306'),
-//            'database' => 'propowf0_order',
-//            'username' => 'propowf0_bella',
-//            'password' => 'U1B_!WLboMQ8',
+
             'database' => 'order',
             'username' => 'root',
             'password' => 'root',

@@ -73,7 +73,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        Category::query()->where('id',$id)->update($data);
+        return $this->message('修改成功');
     }
 
     /**
@@ -84,6 +86,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Category::query()->where('id',$id)->delete();
+        return $this->message('删除成功!');
     }
 }
