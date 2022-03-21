@@ -32,11 +32,14 @@ Route::prefix('v1')->group(function () {
         Route::post('roles/assign-permissions', [\App\Http\Controllers\Api\RoleController::class, 'assignPermissions']);
         Route::get('orders', [\App\Http\Controllers\Api\OrderController::class, 'index']);
         Route::get('orders/todaySales', [\App\Http\Controllers\Api\OrderController::class, 'todaySales']);
-        Route::get('orders/mothSales/country',[\App\Http\Controllers\Api\OrderController::class,'mothCountryStatistics']);
-        Route::get('orders/weekly/dashboard',[\App\Http\Controllers\Api\OrderController::class,'weeklyOrders']);
-        Route::get('orders/statistic',[\App\Http\Controllers\Api\OrderController::class,'statistic']);
-        Route::resource('products/category',\App\Http\Controllers\Api\CategoryController::class)->parameter('category','id');
-        Route::resource('products',\App\Http\Controllers\Api\ProductController::class)->parameter('product','id');
+        Route::get('orders/mothSales/country', [\App\Http\Controllers\Api\OrderController::class, 'mothCountryStatistics']);
+        Route::get('orders/weekly/dashboard', [\App\Http\Controllers\Api\OrderController::class, 'weeklyOrders']);
+        Route::get('orders/statistic', [\App\Http\Controllers\Api\OrderController::class, 'statistic']);
+        Route::resource('products/category', \App\Http\Controllers\Api\CategoryController::class)->parameter('category', 'id');
+        Route::resource('gross-orders', \App\Http\Controllers\Api\GrossOrderController::class)->parameter('gross-orders', 'id');
+        Route::post('gross-orders/record', [\App\Http\Controllers\Api\GrossOrderController::class, 'record']);
+        Route::resource('products', \App\Http\Controllers\Api\ProductController::class)->parameter('product', 'id');
+        Route::resource('storehouses',\App\Http\Controllers\Api\StorehouseController::class)->parameter('storehouses','id')->except('edit');
     });
 
 });
