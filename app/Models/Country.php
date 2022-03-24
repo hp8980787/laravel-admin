@@ -9,5 +9,12 @@ class Country extends Model
 {
     use HasFactory;
 
-    protected $connection = 'order';
+//    protected $connection = 'order';
+
+    public function ScopeActive($query, $status)
+    {
+        if ($status) {
+            return $query->where('status', $status);
+        }
+    }
 }

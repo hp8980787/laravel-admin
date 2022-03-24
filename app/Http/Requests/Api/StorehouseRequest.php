@@ -24,14 +24,13 @@ class StorehouseRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()){
+            case 'PUT':
             case 'POST':
                 return [
                     'name'=>'required|min:2|max:30',
                     'country_id'=>'required',
                 ];
         }
-        return [
 
-        ];
     }
 }

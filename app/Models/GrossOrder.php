@@ -24,10 +24,16 @@ class GrossOrder extends Model
     {
         return $query->where('created_at', '>=', $time);
     }
+
     public function setInfoAttribute($val)
     {
         if (!is_string($val)) {
             $this->attributes['info'] = json_encode($val);
         }
+    }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class,'order_id','id');
     }
 }

@@ -17,6 +17,7 @@ class OrderResource extends JsonResource
         return [
             'id'=>$this->id,
             'domain'=>DomainResource::make($this->domain),
+            'pids'=>$this->pids,
             'trans_id'=>$this->trans_id,
             'user_id'=>$this->user_id,
             'info'=> json_encode(array_reverse(json_decode($this->info,true))),
@@ -26,6 +27,7 @@ class OrderResource extends JsonResource
             'order_status'=>$this->order_status,
             'buy_date'=>$this->buy_time,
             'created_at'=>$this->created_at,
+            'items'=>$this->items,
             'ip'=>$this->ip,
 
         ];

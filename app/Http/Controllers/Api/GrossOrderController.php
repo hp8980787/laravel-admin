@@ -13,7 +13,9 @@ class GrossOrderController extends Controller
     public function index(Request $request)
     {
         if ($request->keyword) {
-            $orders = GrossOrder::query()->orderBy('created_at', 'desc')
+            $orders = GrossOrder::query()
+                ->with('items')
+                ->orderBy('created_at', 'desc')
                 ->orWhere('trans_id', 'like', "%$request->keyword%")
                 ->orWhere('table_name', 'like', "%$request->keyword%")
                 ->orWhere('info', 'like', "%$request->keyword%")
@@ -35,11 +37,11 @@ class GrossOrderController extends Controller
 
     public function record(Request $request)
     {
-        $data =  $request->data;
-        foreach ($data as $val){
-            Order::query()->create($val);
-        }
-
-        return $this->success($request->data);
+        $data = $request->data;
+        $ids = array_column($data, 'id');
+        GrossOrder::query()->whereIn('id',$ids)->update([
+            'record_status'=>1
+        ]);
+        return $this->success($ids);
     }
 }

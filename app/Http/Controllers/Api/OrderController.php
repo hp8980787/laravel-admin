@@ -58,7 +58,7 @@ class OrderController extends Controller
                 ->orWhere('info','like',"%$request->keyword%")
                 ->paginate(20);
         }else{
-            $orders = Order::query()->orderBy('created_at','desc')
+            $orders = Order::query()->with('items')->where('record_status',1)->orderBy('created_at','desc')
                 ->paginate(20);
         }
 

@@ -31,6 +31,7 @@ class GrossOrderResource extends JsonResource
             'buy_date'=>$this->buy_time,
             'created_at'=>$this->created_at,
             'ip'=>$this->ip,
+            'items'=>OrderItemResource::collection($this->items),
         ];
     }
 }

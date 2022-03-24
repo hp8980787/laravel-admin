@@ -39,7 +39,10 @@ Route::prefix('v1')->group(function () {
         Route::resource('gross-orders', \App\Http\Controllers\Api\GrossOrderController::class)->parameter('gross-orders', 'id');
         Route::post('gross-orders/record', [\App\Http\Controllers\Api\GrossOrderController::class, 'record']);
         Route::resource('products', \App\Http\Controllers\Api\ProductController::class)->parameter('product', 'id');
-        Route::resource('storehouses',\App\Http\Controllers\Api\StorehouseController::class)->parameter('storehouses','id')->except('edit');
+        Route::resource('storehouses', \App\Http\Controllers\Api\StorehouseController::class)->parameter('storehouses', 'id')->except('edit');
+        Route::resource('order-items',\App\Http\Controllers\Api\OrderItemController::class)->parameter('order-items','id');
+        Route::get('countries', [\App\Http\Controllers\Api\CountryController::class, 'index']);
+        Route::get('ship', [\App\Http\Controllers\Api\ShipController::class, 'ship']);
     });
 
 });
