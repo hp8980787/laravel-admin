@@ -11,12 +11,17 @@ class Product extends Model
 
     protected $table = 'product';
     protected $primaryKey = 'id';
-
+    protected $imgPath = 'https://www.batteriexpert.com/img/';
     public function stocks()
     {
         return $this->belongsToMany(Storehouse::class, 'storehouse_product', 'product_id', 'storehouse_id')
             ->withPivot('amount')
             ->withTimestamps();
+    }
+
+    public function getOkpcodeAttribute($value)
+    {
+        return $this->imgPath . $value . '.jpg';
     }
 
 

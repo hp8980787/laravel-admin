@@ -43,6 +43,9 @@ Route::prefix('v1')->group(function () {
         Route::resource('order-items',\App\Http\Controllers\Api\OrderItemController::class)->parameter('order-items','id');
         Route::get('countries', [\App\Http\Controllers\Api\CountryController::class, 'index']);
         Route::get('ship', [\App\Http\Controllers\Api\ShipController::class, 'ship']);
+        Route::resource('ships',\App\Http\Controllers\Api\ShipController::class)->parameter('ships','id');
+        Route::resource('purchases',\App\Http\Controllers\Api\PurchaseController::class)->parameter('purchases','id');
+        Route::put('purchases/completed/{id}',[\App\Http\Controllers\Api\PurchaseController::class,'completed']);
     });
 
 });

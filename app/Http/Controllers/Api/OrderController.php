@@ -59,6 +59,7 @@ class OrderController extends Controller
                 ->paginate(20);
         }else{
             $orders = Order::query()->with('items')->where('record_status',1)->orderBy('created_at','desc')
+              ->orderBy('id','desc')
                 ->paginate(20);
         }
 

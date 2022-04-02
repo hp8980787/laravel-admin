@@ -7,6 +7,7 @@ use App\Http\Resources\GrossOrderCollnection;
 use App\Models\GrossOrder;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GrossOrderController extends Controller
 {
@@ -42,6 +43,33 @@ class GrossOrderController extends Controller
         GrossOrder::query()->whereIn('id',$ids)->update([
             'record_status'=>1
         ]);
+        $orders = GrossOrder::query()->with('items')->whereIn('id',$ids)->get();
+        foreach ($orders as $order){
+            foreach ($order->items as $item) {
+                $res = DB::table('product as p')->where('product_id', $item->product_id)->join('storehouse_product as s', 'p.id', '=', 's.product_id')
+                    ->get();
+
+                if (sizeof($res) <= 0) {
+                    $order->order_status = Order::ORDER_STATUS_SOLD_OUT;
+                    $order->save();
+                    continue;
+                }
+
+                foreach ($res as $val) {
+                    if (intval($val->amount) - intval($item->amount) < 0) {
+                        $order->order_status = Order::ORDER_STATUS_SOLD_OUT;
+                        $order->save();
+                        continue;
+                    } elseif (intval($val->amount) - intval($item->amount) >= 0) {
+                        $order->order_status = Order::ORDER_STATUS_IN_STOCK;
+                        $order->save();
+                    }
+
+                }
+
+
+            }
+        }
         return $this->success($ids);
     }
 }
